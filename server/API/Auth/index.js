@@ -18,17 +18,11 @@ Method   POST
 
 Router.post("/signup", async (req, res) => {
     try {
-
-        const { email, phoneNumber } = req.body.credentials;
-
         await UserModel.findByEmailAndPhone(req.body.credentials);
-
         // save to DB
         const newUser = await UserModel.create(req.body.credentials);
-
         //generate JWT auth token
         const token = newUser.generateJwtToken();
-
         //return
         return res.status(200).json({ token, status: "success" });
     } catch (error) {
@@ -38,11 +32,23 @@ Router.post("/signup", async (req, res) => {
 
 /*
 Route    /signin
-Des      Signup with email and password
+Des      Signin with email and password
 Params   none
 Access   Public
 Method   POST
 */
+
+Router.post("/signin", async (req, res) => {
+    try {
+        const user = await UserModel.findByEmailAndPassword(req.body.credentials);
+        //generate JWT auth token
+        const token = user.generateJwtToken();
+        //return
+        return res.status(200).json({ token, status: "success" });
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
 
 
 export default Router;
