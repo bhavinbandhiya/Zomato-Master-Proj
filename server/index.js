@@ -13,6 +13,7 @@ import googleAuthConfig from "./config/google.config";
 //Microservices Routes
 import Auth from "./API/Auth";
 import Restaurant from "./API/Restaurant";
+import FoodModel from "./API/Food";
 
 //Database Connection
 import ConnectDB from "./database/connection";
@@ -33,6 +34,8 @@ googleAuthConfig(passport);
 //Application Route
 zomato.use("/auth",Auth);
 zomato.use("/restaurant", Restaurant);
+zomato.use("/food", Food);
+
 
 
 zomato.get("/", (req, res) => res.json({ message: "Setup success" }));
